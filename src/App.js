@@ -23,13 +23,6 @@ function App() {
     <div className="App">
       <Header />
 
-      <p>
-        <Link to="/todos">Todo</Link>
-      </p>
-      <p>
-        <Link to="/albums">Album</Link>
-      </p>
-
       <Switch>
         <Route path="/todos" component={TodoFeature} />
         <Route path="/albums" component={AlbumFeature} />

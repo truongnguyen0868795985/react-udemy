@@ -17,6 +17,9 @@ function InputField(props) {
       disabled={disabled}
       error={hasError}
       helperText={errors[name]?.message}
+      variant="outlined"
+      margin="normal"
+      fullWidth
     />
   );
 }

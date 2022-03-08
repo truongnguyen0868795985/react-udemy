@@ -1,8 +1,14 @@
-const { createSlice } = require('@reduxjs/toolkit');
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const fetchUserById = createAsyncThunk('users/fetchByIdStatus', async (userId, thunkAPI) => {
-  const response = await userApi.fetchById(userId);
-  return response.data;
+import userApi from 'api/userApi';
+
+export const register = createAsyncThunk('user/register', async (payload) => {
+  const data = await userApi.register(payload);
+
+  localStorage.setItem('access_token', data.jwt);
+  localStorage.setItem('user', JSON.stringify(data.user));
+
+  return data.user;
 });
 
 const userSlice = createSlice({
@@ -17,6 +23,11 @@ const userSlice = createSlice({
     },
     decrease(state) {
       return state - 1;
+    },
+  },
+  extraReducers: {
+    [register.fulfilled]: (state, action) => {
+      state.current = action.payload;
     },
   },
 });

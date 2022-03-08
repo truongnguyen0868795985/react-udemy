@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "module": "es6",
     "baseUrl": "./src",
-    "paths": {}
-  }
+    "paths": {},
+    "moduleResolution": "node"
+  },
+  "exclude": ["./node_modules"]
 }

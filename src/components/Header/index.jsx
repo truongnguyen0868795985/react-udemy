@@ -1,18 +1,16 @@
+import { Link, NavLink } from 'react-router-dom';
+
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import CodeIcon from '@material-ui/icons/Code';
-import { Link, NavLink } from 'react-router-dom';
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
 import Register from 'features/Auth/components/Register';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +73,7 @@ export default function Header() {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <Register />
+          <Register closeDialog={handleClose} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

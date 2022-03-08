@@ -1,12 +1,12 @@
-import InputField from 'components/form-controls/InputField';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Avatar, Button, makeStyles, Typography } from '@material-ui/core';
+
+import { Avatar, Button, Typography, makeStyles } from '@material-ui/core';
+
+import InputField from 'components/form-controls/InputField';
 import { LockOutlined } from '@material-ui/icons';
 import PasswordField from 'components/form-controls/PasswordField';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +30,18 @@ export default function RegisterForm(props) {
 
   const schema = yup.object().shape({
     // fullName: yup.string().min(10, 'Min is 10').required('Please enter title'),
+    fullName: yup
+      .string()
+      .required('Please enter your full name.')
+      .test('Should has at least two words', 'Please enter at least two words', (value) => {
+        return value.split(' ').length >= 2;
+      }),
+    email: yup.string().required('Please enter email.').email('Please enter a valid email address.'),
+    password: yup.string().required('Please enter your password').min(6, 'Please enter at least 6 characters'),
+    retypePassword: yup
+      .string()
+      .required('Please retype your password')
+      .oneOf([yup.ref('password')], 'Password does not match'),
   });
 
   const form = useForm({

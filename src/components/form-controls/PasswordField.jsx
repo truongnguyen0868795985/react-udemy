@@ -1,18 +1,19 @@
+import { Controller } from 'react-hook-form';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import PropTypes from 'prop-types';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 function PasswordField(props) {
   const { form, name, label, disabled } = props;
-  const { errors, formState } = form;
-  const hasError = formState.touched[name] && errors[name];
+  const { errors } = form;
+  const hasError = !!errors[name];
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,7 +22,7 @@ function PasswordField(props) {
   };
 
   return (
-    <FormControl fullWidth margin="normal" variant="outlined">
+    <FormControl fullWidth margin="normal" variant="outlined" error={hasError}>
       <InputLabel htmlFor={name}>{label}</InputLabel>
       <Controller
         id={name}
@@ -30,7 +31,6 @@ function PasswordField(props) {
         as={OutlinedInput}
         type={showPassword ? 'text' : 'password'}
         label={label}
-        helperText={errors[name]?.message}
         variant="outlined"
         margin="normal"
         fullWidth
@@ -47,6 +47,7 @@ function PasswordField(props) {
           </InputAdornment>
         }
       />
+      <FormHelperText error={!!hasError}>{errors[name]?.message}</FormHelperText>
     </FormControl>
   );
 }

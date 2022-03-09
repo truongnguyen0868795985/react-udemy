@@ -26,17 +26,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FilterByPrice({ onChange }) {
+function FilterByPrice({ filters, onChange }) {
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    salePrice_gte: 0,
-    salePrice_lte: 0,
-  });
+  const [values, setValues] = useState(() => ({
+    salePrice_gte: filters.salePrice_gte || 0,
+    salePrice_lte: filters.salePrice_lte || 0,
+  }));
 
   const handleSubmit = (e) => {
     console.log('Submit: ', values);
-    if (onChange) onChange(values);
+    if (onChange) onChange({ ...filters, ...values });
   };
 
   const handleChange = (e) => {

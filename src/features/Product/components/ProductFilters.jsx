@@ -18,6 +18,9 @@ function ProductFilters({ filters, onChange }) {
       'category.id': newCategoryId,
     };
 
+    console.log('filter', filters);
+    console.log('newfilter', newFilters);
+
     onChange(newFilters);
   };
 
@@ -30,7 +33,7 @@ function ProductFilters({ filters, onChange }) {
   return (
     <Box>
       <FilterByCategory onChange={handleCategoryChange} />
-      <FilterByPrice onChange={handleChange} />
+      <FilterByPrice filters={filters} onChange={handleChange} />
       <FilterByService filters={filters} onChange={handleChange} />
     </Box>
   );

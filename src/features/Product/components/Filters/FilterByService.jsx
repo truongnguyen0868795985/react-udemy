@@ -42,7 +42,10 @@ function FilterByService({ filters = {}, onChange }) {
     if (!onChange) return;
 
     const { name, checked } = e.target;
-    onChange({ [name]: checked });
+    onChange({
+      ...filters,
+      [name]: checked,
+    });
   };
 
   return (

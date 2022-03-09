@@ -1,8 +1,8 @@
 import { Route, Switch } from 'react-router-dom';
 
 import AlbumFeature from './features/Album/pages';
-import { Button } from '@material-ui/core';
 import Header from 'components/Header';
+import ProductFeature from 'features/Product';
 import TodoFeature from './features/Todo/pages';
 import productApi from './api/productApi';
 import { useEffect } from 'react';
@@ -32,14 +32,11 @@ function App() {
     <div className="App">
       <Header />
 
-      <Button onClick={showNoti}>Show noti</Button>
-
       <Switch>
         <Route path="/todos" component={TodoFeature} />
         <Route path="/albums" component={AlbumFeature} />
+        <Route path="/products" component={ProductFeature} />
       </Switch>
-
-      <p>Footer</p>
     </div>
   );
 }

@@ -1,17 +1,20 @@
+import { AccountCircle, Close } from '@material-ui/icons';
+import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import { Close } from '@material-ui/icons';
 import CodeIcon from '@material-ui/icons/Code';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { IconButton } from '@material-ui/core';
-import React from 'react';
+import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { logout } from 'features/Auth/userSlice';
 import { makeStyles } from '@material-ui/core/styles';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,10 +39,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const MODE = {
+  LOGIN: 'login',
+  REGISTER: 'register',
+};
+
 export default function Header() {
   const classes = useStyles();
+  const loggedInUser = useSelector((state) => state.user.current);
+  const isLoggedIn = !!loggedInUser.id;
+  const dispatch = useDispatch();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(MODE.LOGIN);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,6 +60,19 @@ export default function Header() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleUserClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogoutClick = () => {
+    const action = logout();
+    dispatch(action);
   };
 
   return (
@@ -67,11 +93,24 @@ export default function Header() {
             <Button color="inherit">Album</Button>
           </NavLink>
 
-          <Button color="inherit" onClick={handleClickOpen}>
-            Login
-          </Button>
+          {!isLoggedIn && (
+            <Button color="inherit" onClick={handleClickOpen}>
+              Login
+            </Button>
+          )}
+
+          {isLoggedIn && (
+            <IconButton>
+              <AccountCircle color="inherit" onClick={handleUserClick} />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
+
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+        <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+        <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+      </Menu>
 
       <Dialog
         disableEscapeKeyDown
@@ -84,7 +123,26 @@ export default function Header() {
           <Close />
         </IconButton>
         <DialogContent>
-          <Register closeDialog={handleClose} />
+          {mode === MODE.REGISTER && (
+            <>
+              <Register closeDialog={handleClose} />
+              <Box>
+                <Button color="primary" onClick={() => setMode(MODE.LOGIN)}>
+                  Already have an account. Login here
+                </Button>
+              </Box>
+            </>
+          )}
+          {mode === MODE.LOGIN && (
+            <>
+              <Login closeDialog={handleClose}></Login>
+              <Box>
+                <Button color="primary" onClick={() => setMode(MODE.REGISTER)}>
+                  You have no account? Create new one.
+                </Button>
+              </Box>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>

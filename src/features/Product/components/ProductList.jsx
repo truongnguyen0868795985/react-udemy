@@ -9,9 +9,7 @@ function ProductList({ data }) {
       <Grid container>
         {data.map((product) => (
           <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-            <Box padding={1}>
-              <Product product={product} />
-            </Box>
+            <Product product={product} />
           </Grid>
         ))}
       </Grid>

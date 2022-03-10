@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
 import { Button } from '@material-ui/core';
-import InputField from 'components/form-controls/InputField';
 import PropTypes from 'prop-types';
+import QuantityField from 'components/form-controls/QuantityField';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -38,9 +38,9 @@ function AddToCardForm({ onSubmit = null }) {
   return (
     <>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="quantity" label="Số lượng" form={form} />
+        <QuantityField name="quantity" label="Số lượng" form={form} />
 
-        <Button disabled={isSubmitting} type="submit" variant="contained" color="primary" fullWidth>
+        <Button disabled={isSubmitting} type="submit" variant="contained" color="primary" style={{ width: '250px' }}>
           Thêm vào giỏ hàng
         </Button>
       </form>

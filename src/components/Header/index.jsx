@@ -1,6 +1,6 @@
 import { AccountCircle, Close } from '@material-ui/icons';
-import { Box, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { Link, NavLink } from 'react-router-dom';
+import { Badge, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -10,8 +10,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { cartItemCountSelector } from 'features/Cart/selectors';
 import { logout } from 'features/Auth/userSlice';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
@@ -46,9 +48,11 @@ const MODE = {
 
 export default function Header() {
   const classes = useStyles();
+  const history = useHistory();
   const loggedInUser = useSelector((state) => state.user.current);
   const isLoggedIn = !!loggedInUser.id;
   const dispatch = useDispatch();
+  const cartItemsCount = useSelector(cartItemCountSelector);
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
@@ -75,6 +79,10 @@ export default function Header() {
     dispatch(action);
   };
 
+  const handleCartClick = () => {
+    history.push('/cart');
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -95,6 +103,12 @@ export default function Header() {
           <NavLink className={classes.link} to="/albums">
             <Button color="inherit">Album</Button>
           </NavLink>
+
+          <IconButton aria-label="show 4 new mails" color="inherit" onClick={handleCartClick}>
+            <Badge badgeContent={cartItemsCount} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
 
           {!isLoggedIn && (
             <Button color="inherit" onClick={handleClickOpen}>

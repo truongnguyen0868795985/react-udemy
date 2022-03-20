@@ -33,13 +33,12 @@ function ListPage(props) {
   const location = useLocation();
   const queryParams = useMemo(() => {
     const params = queryString.parse(location.search);
-    console.log('params', params);
 
     return {
       ...params,
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 9,
-      _sort: params.sort || 'salePrice:ASC',
+      _sort: params._sort || 'salePrice:ASC',
       isPromotion: params.isPromotion === 'true',
       isFreeShip: params.isFreeShip === 'true',
     };
@@ -52,6 +51,7 @@ function ListPage(props) {
   const [pagination, setPagination] = useState({
     limit: 9,
     total: 9,
+    page: 1,
   });
 
   useEffect(() => {
@@ -59,8 +59,8 @@ function ListPage(props) {
       try {
         setLoading(true);
         const { data, pagination } = await productApi.getAll(queryParams);
-        console.log('Products:', data);
         setProductList(data);
+        console.log(pagination);
         setPagination(pagination);
       } catch (error) {
         console.log('Failed to fetch product list', error);
@@ -79,8 +79,6 @@ function ListPage(props) {
   };
 
   const handleFilterChange = (newFilters) => {
-    console.log('newfilter', newFilters);
-
     history.push({
       pathname: history.location.pathname,
       search: queryString.stringify(newFilters),
@@ -88,12 +86,15 @@ function ListPage(props) {
   };
 
   const handleSortChange = (newSortValue) => {
-    const filters = { ...queryParams, _sort: newSortValue };
+    const filters = { ...queryParams, _sort: newSortValue, _page: 1 };
+    console.log('new filter', filters);
     history.push({
       pathname: history.location.pathname,
       search: queryString.stringify(filters),
     });
   };
+
+  console.log('curentSort', queryParams._sort);
 
   return (
     <Box>

@@ -19,7 +19,7 @@ function ProductFilters({ filters, onChange }) {
     };
 
     console.log('filter', filters);
-    console.log('newfilter', newFilters);
+    console.log('newFilters', newFilters);
 
     onChange(newFilters);
   };

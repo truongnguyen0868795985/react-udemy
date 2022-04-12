@@ -79,9 +79,11 @@ function ListPage(props) {
   };
 
   const handleFilterChange = (newFilters) => {
+    const filters = { ...newFilters, _page: 1 };
+
     history.push({
       pathname: history.location.pathname,
-      search: queryString.stringify(newFilters),
+      search: queryString.stringify(filters),
     });
   };
 
